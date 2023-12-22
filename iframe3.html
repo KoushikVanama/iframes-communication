@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe3</title>
+</head>
+
+<body>
+    Inside iframe3!!
+    <script>
+        console.log("____iframe3 script start____")
+
+        // acts a receiver while sending message from iframe2 to iframe3
+        window.addEventListener("DOMContentLoaded", function () {
+            window.addEventListener("message", function (event) {
+                console.log("From iframe2: ", event.data);
+            })
+        })
+
+        // acts as sender while sending message from iframe3 to iframe2
+        window.onload = function () {
+            var iframe2 = window.parent.document.getElementById("iframe2").contentWindow;
+            iframe2.postMessage({ message: "Namaste! from iframe3" }, "http://127.0.0.1:5500");
+        };
+
+        console.log("____iframe3 script end____")
+    </script>
+</body>
+
+</html>
