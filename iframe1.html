@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe1</title>
+</head>
+
+<body>
+    Inside iframe1!!
+    <script>
+        console.log("====iframe1 script start====")
+        console.log(document.location.href)
+
+        // acts as sender while sending message from iframe1 to parent
+        window.top.postMessage(JSON.stringify({ status: "OK", message: "Hello! from iframe1" }), "http://127.0.0.1:5500")
+
+        // acts as receiver while sending message from parent to child
+        window.addEventListener("message", function (event) {
+            console.log(event.origin)
+            if (event.origin !== "http://127.0.0.1:5500") return;
+            console.log("From parent:", event.data)
+        });
+        
+        console.log("====iframe1 script end====");
+    </script>
+</body>
+
+</html>

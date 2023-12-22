@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iframe cross site communication!</title>
+</head>
+
+<body>
+    <h1>Parent <==> child communication</h1>
+    <iframe src="iframe1.html"></iframe>
+    <script>
+        console.log("----index.html script start----")
+
+        // acts as receiver while sending message from iframe1 to parent
+        window.addEventListener("message", function (event) {
+            if (event.origin !== "http://127.0.0.1:5500") return;
+            console.log("From iframe1:", event.data)
+        })
+
+        // acts as sender while sending message from parent to iframe1
+        window.onload = function () {
+            var iframe = document.querySelector("iframe").contentWindow;
+            iframe.postMessage(JSON.stringify({ status: "OK", message: "Hi! from parent" }), "http://127.0.0.1:5500")
+        }
+
+        console.log("----index.html script end----")
+    </script>
+</body>
+
+</html>
