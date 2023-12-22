@@ -8,7 +8,10 @@
 </head>
 
 <body>
-    Inside iframe2!!
+    <h4>Inside iframe2!!</h4>
+    <input id="msg" type="text" placeholder="Enter your text" />
+    <button id="sendMsg" onclick="sendMsg()">Send</button>
+    <p>Message from iframe3: <span id="incomingMsg"></span></p>
     <script>
         console.log("~~~~iframe2 script start~~~~")
 
@@ -16,6 +19,10 @@
         window.addEventListener("DOMContentLoaded", function () {
             window.addEventListener("message", function (event) {
                 console.log("From iframe3: ", event.data);
+                if (typeof event.data == "string") {
+                    let elem = document.getElementById("incomingMsg");
+                    elem.innerText = event.data;
+                }
             })
         })
 
@@ -24,6 +31,12 @@
             var iframe3 = window.parent.document.getElementById("iframe3").contentWindow;
             iframe3.postMessage({ message: "Namaskar! from iframe2" }, "http://127.0.0.1:5500");
         };
+
+        function sendMsg() {
+            const message = document.querySelector("#msg").value;
+            var iframe3 = window.parent.document.getElementById("iframe3").contentWindow;
+            iframe3.postMessage(message, "http://127.0.0.1:5500");
+        }
 
         console.log("~~~~iframe2 script end~~~~")
     </script>
